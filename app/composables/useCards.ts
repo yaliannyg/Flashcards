@@ -13,7 +13,6 @@ export function useCards() {
   const { data: totalAmoundCards } = useFetch<number>(`/api/cards/total`);
 
   const cardsQuestions = computed(() => {
-    console.log(cards.value)
     return cards.value?.map((card) => card.front) ?? [];
   });
 
