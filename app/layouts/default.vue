@@ -1,25 +1,41 @@
 <template>
-  <div class="flex size-screen">
-    <aside class="w-56">
-      <Sidebar />
-    </aside>
-    <main class="flex-1 flex flex-col h-screen">
-      <div class="flex flex-col justify-center border-b border-border h-14">
-        <Navbar />
+  <div
+    class="flex max-w-7xl size-full h-screen m-auto text-xs  overflow-hidden bg-background"
+  >
+    <Sidebar />
+
+    <main class="flex-1 flex flex-col">
+      <div class="flex w-full items-center px-2 py-4">
+        <div
+          class="flex flex-col items-baseline justify-center gap-1 text-lg text-text-base font-semibold"
+        >
+          <h1>My catalog</h1>
+          <p className="mt-1 text-xs text-text-heading font-normal">
+            <span v-if="childRef">childRef.flashCardsLength</span>
+            <span v-else>0</span>
+            flashcard sets
+          </p>
+        </div>
+        <BaseButton label="Add Flash Card" @click="handleAddFlashCard" />
       </div>
-      <div
-        class="p-1 flex-1 overflow-auto max-h-full bg-surface/30"
-        :style="{
-          boxShadow:
-            'rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;',
-        }"
-      >
+
+      <div class="size-full max-h-full flex-1 overflow-auto">
         <slot></slot>
       </div>
     </main>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import BaseButton from "@/components/UI/BaseButton.vue";
+import Sidebar from "@/components/Sidebar.vue";
+import { ref } from "vue";
+
+const childRef = ref(null);
+
+function handleAddFlashCard() {
+  console.log("TO DO");
+}
+</script>
 
 <style scoped></style>

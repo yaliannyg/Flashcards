@@ -1,89 +1,75 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'); */
-
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap");
-
 @import "tailwindcss";
 
 @theme {
-  --color-background: var(
-    --backgroud
-  ); /* → fondo del área de cards y campos de input */
-  --color-surface: var(--surface);
-  --color-on-surface: var(--on-surface);
-  --color-muted: var(--muted);
-  --color-on-muted: var(--on-muted);
-  --color-on-muted-second: var(--on-muted-second);
-  --color-border: var(--border);
+  --text-xxxs: 8px;
+  --text-xxs: 10px;
 
-  --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif;
-}
+  /* Palette */
+  --color-blue-slate: #5d737e;
+  --color-tropical-teal: #64b6ac;
+  --color-icy-aqua: #c0fdfb;
+  --color-frozen-water: #daffef;
+  --color-porcelain: #fcfffd;
 
-body {
-  color: var(--color-gray-600);
-
-  /* font-size: var(--text-base); */
-  /* line-height: var(--text-base--line-height); */
-}
-
-@layer base {
+  /* Semantic color tokens (light theme) */
+  --color-background: #13132a;
+  --color-surface: #1c1c2e;
+  --color-surface-muted: #2a2a45;
+  --color-primary: #6448ac;
+  --color-primary-emphasis: #8b5cf6;
+  --color-border: #FFFFFF12;
+  --color-text-base: #e0e0f0;
+  --color-text-heading: #5e5e80;
+  --color-text-muted: #c4c4d9;
 }
 
 :root {
-  /* semantic theme tokens */
-  --backgroud: var(--color-dusty-mauve-100);
-  --surface: var(--color-powder-blush-100);
-  --on-surface: var(--color-powder-blush-800);
-  --muted: var(--color-beige-100);
-  --on-muted: var(--color-beige-700);
-  --on-muted-second: var(--color-dusty-mauve-400);
-  --border: var(--color-dusty-mauve-200);
+  --text: #5d737e;
+  --text-h: #2c4a54;
+  --bg: #fcfffd;
+  --border: #c0fdfb;
+  --code-bg: #daffef;
+  --accent: #64b6ac;
+  --accent-bg: rgba(100, 182, 172, 0.15);
+  --accent-border: rgba(100, 182, 172, 0.5);
+  --social-bg: rgba(218, 255, 239, 0.6);
+  --shadow:
+    rgba(93, 115, 126, 0.12) 0 10px 15px -3px,
+    rgba(93, 115, 126, 0.06) 0 4px 6px -2px;
 
-  /* palette colors  */
-  --color-dusty-mauve-50: #f4f0f2;
-  --color-dusty-mauve-100: #eae1e5;
-  --color-dusty-mauve-200: #d4c4cb;
-  --color-dusty-mauve-300: #bfa6b2;
-  --color-dusty-mauve-400: #a98998;
-  --color-dusty-mauve-500: #946b7e;
-  --color-dusty-mauve-600: #765665;
-  --color-dusty-mauve-700: #59404c;
-  --color-dusty-mauve-800: #3b2b32;
-  --color-dusty-mauve-900: #1e1519;
-  --color-dusty-mauve-950: #150f12;
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
 
-  --color-muted-teal-50: #f0f5f0;
-  --color-muted-teal-100: #e0ebe1;
-  --color-muted-teal-200: #c1d7c2;
-  --color-muted-teal-300: #a2c3a4;
-  --color-muted-teal-400: #84ae85;
-  --color-muted-teal-500: #659a67;
-  --color-muted-teal-600: #517b52;
-  --color-muted-teal-700: #3c5d3e;
-  --color-muted-teal-800: #283e29;
-  --color-muted-teal-900: #141f15;
-  --color-muted-teal-950: #0e160e;
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
-  --color-beige-50: #f5f6ef;
-  --color-beige-100: #eaedde;
-  --color-beige-200: #d5dbbd;
-  --color-beige-300: #c1c99c;
-  --color-beige-400: #acb77b;
-  --color-beige-500: #97a45b;
-  --color-beige-600: #798448;
-  --color-beige-700: #5b6336;
-  --color-beige-800: #3c4224;
-  --color-beige-900: #1e2112;
-  --color-beige-950: #15170d;
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
 
-  --color-powder-blush-50: #fdeae7;
-  --color-powder-blush-100: #fcd4cf;
-  --color-powder-blush-200: #f8aaa0;
-  --color-powder-blush-300: #f57f70;
-  --color-powder-blush-400: #f25540;
-  --color-powder-blush-500: #ee2a11;
-  --color-powder-blush-600: #bf220d;
-  --color-powder-blush-700: #8f190a;
-  --color-powder-blush-800: #5f1107;
-  --color-powder-blush-900: #300803;
-  --color-powder-blush-950: #210602;
+body {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+#app {
+  margin: 0 auto;
+  /* text-align: center; */
+  border-inline: 1px solid var(--border);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }

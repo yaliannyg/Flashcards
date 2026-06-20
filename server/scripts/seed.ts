@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
-import { CardModel } from "../models/Cards";
-import { CategoryModel } from "../models/Categories";
+import { FlashcardModel } from "../models/Flashcards";
+import { TagModel } from "../models/Tags";
 import "dotenv/config";
 
 const MONGO_URI = process.env.NUXT_MONGOOSE_URI;
 
-const categories = [
+const tagDefinitions = [
   { name: "Geography", slug: "geography" },
   { name: "Technology", slug: "technology" },
   { name: "Biology", slug: "biology" },
@@ -18,99 +18,167 @@ const categories = [
   { name: "Art", slug: "art" },
 ];
 
-const cardsByCategorySlug: Record<string, { front: string; back: string }[]> = {
-  geography: [
-    { front: "What is the capital of France?", back: "Paris" },
-    { front: "What is the largest country by area?", back: "Russia" },
-  ],
-  technology: [
-    { front: "What does HTTP stand for?", back: "HyperText Transfer Protocol" },
-    { front: "What does CSS stand for?", back: "Cascading Style Sheets" },
-  ],
-  biology: [
-    { front: "What is the powerhouse of the cell?", back: "The mitochondria" },
-    { front: "How many chromosomes do humans have?", back: "46 (23 pairs)" },
-  ],
-  chemistry: [
-    {
-      front: "What is the formula for water?",
-      back: "H₂O (two hydrogen atoms bonded to one oxygen atom)",
-    },
-    { front: "What is the atomic number of carbon?", back: "6" },
-  ],
-  literature: [
-    { front: "Who wrote 'Don Quixote'?", back: "Miguel de Cervantes" },
-    { front: "Who wrote '1984'?", back: "George Orwell" },
-  ],
-  physics: [
-    {
-      front: "What is the speed of light in a vacuum?",
-      back: "Approximately 299,792,458 meters per second (≈ 3 × 10⁸ m/s)",
-    },
-    {
-      front: "What is Newton's second law of motion?",
-      back: "F = ma (Force equals mass times acceleration)",
-    },
-  ],
-  history: [
-    { front: "What year did World War II end?", back: "1945" },
-    { front: "In what year did the French Revolution begin?", back: "1789" },
-  ],
-  mathematics: [
-    {
-      front: "What is the Pythagorean theorem?",
-      back: "a² + b² = c², where c is the hypotenuse of a right triangle",
-    },
-    {
-      front: "What is the value of π (pi) to 5 decimal places?",
-      back: "3.14159",
-    },
-  ],
-  astronomy: [
-    { front: "What planet is known as the Red Planet?", back: "Mars" },
-    { front: "How many planets are in the solar system?", back: "8" },
-  ],
-  art: [
-    { front: "Who painted the Mona Lisa?", back: "Leonardo da Vinci" },
-    { front: "Who painted 'The Starry Night'?", back: "Vincent van Gogh" },
-  ],
-};
+interface FlashcardSeed {
+  question: string;
+  stats: { successes: number; failures: number };
+  dotsActive: number;
+  /** Tag slugs this flashcard is tagged with. */
+  tags: string[];
+}
+
+const flashcards: FlashcardSeed[] = [
+  {
+    question: "What is the capital of France?",
+    stats: { successes: 8, failures: 1 },
+    dotsActive: 1,
+    tags: ["geography", "history"],
+  },
+  {
+    question: "What is the largest country by area?",
+    stats: { successes: 5, failures: 3 },
+    dotsActive: 2,
+    tags: ["geography", "history"],
+  },
+  {
+    question: "What does HTTP stand for?",
+    stats: { successes: 10, failures: 0 },
+    dotsActive: 1,
+    tags: ["technology", "mathematics"],
+  },
+  {
+    question: "What does CSS stand for?",
+    stats: { successes: 4, failures: 2 },
+    dotsActive: 2,
+    tags: ["technology", "art"],
+  },
+  {
+    question: "What is the powerhouse of the cell?",
+    stats: { successes: 6, failures: 1 },
+    dotsActive: 1,
+    tags: ["biology", "chemistry"],
+  },
+  {
+    question: "How many chromosomes do humans have?",
+    stats: { successes: 3, failures: 4 },
+    dotsActive: 3,
+    tags: ["biology", "chemistry"],
+  },
+  {
+    question: "What is the formula for water?",
+    stats: { successes: 9, failures: 0 },
+    dotsActive: 1,
+    tags: ["chemistry", "biology"],
+  },
+  {
+    question: "What is the atomic number of carbon?",
+    stats: { successes: 2, failures: 5 },
+    dotsActive: 3,
+    tags: ["chemistry", "physics"],
+  },
+  {
+    question: "Who wrote 'Don Quixote'?",
+    stats: { successes: 7, failures: 2 },
+    dotsActive: 2,
+    tags: ["literature", "history"],
+  },
+  {
+    question: "Who wrote '1984'?",
+    stats: { successes: 5, failures: 1 },
+    dotsActive: 1,
+    tags: ["literature", "history"],
+  },
+  {
+    question: "What is the speed of light in a vacuum?",
+    stats: { successes: 4, failures: 3 },
+    dotsActive: 2,
+    tags: ["physics", "mathematics"],
+  },
+  {
+    question: "What is Newton's second law of motion?",
+    stats: { successes: 6, failures: 2 },
+    dotsActive: 2,
+    tags: ["physics", "mathematics"],
+  },
+  {
+    question: "What year did World War II end?",
+    stats: { successes: 8, failures: 1 },
+    dotsActive: 1,
+    tags: ["history", "geography"],
+  },
+  {
+    question: "In what year did the French Revolution begin?",
+    stats: { successes: 3, failures: 3 },
+    dotsActive: 2,
+    tags: ["history", "literature"],
+  },
+  {
+    question: "What is the Pythagorean theorem?",
+    stats: { successes: 7, failures: 1 },
+    dotsActive: 1,
+    tags: ["mathematics", "physics"],
+  },
+  {
+    question: "What is the value of π (pi) to 5 decimal places?",
+    stats: { successes: 2, failures: 4 },
+    dotsActive: 3,
+    tags: ["mathematics", "physics"],
+  },
+  {
+    question: "What planet is known as the Red Planet?",
+    stats: { successes: 9, failures: 0 },
+    dotsActive: 1,
+    tags: ["astronomy", "physics"],
+  },
+  {
+    question: "How many planets are in the solar system?",
+    stats: { successes: 6, failures: 1 },
+    dotsActive: 1,
+    tags: ["astronomy", "physics"],
+  },
+  {
+    question: "Who painted the Mona Lisa?",
+    stats: { successes: 5, failures: 2 },
+    dotsActive: 2,
+    tags: ["art", "history"],
+  },
+  {
+    question: "Who painted 'The Starry Night'?",
+    stats: { successes: 4, failures: 2 },
+    dotsActive: 2,
+    tags: ["art", "history"],
+  },
+];
 
 async function seed() {
   await mongoose.connect(MONGO_URI as string);
   console.log("Connected to MongoDB");
 
-  await CardModel.deleteMany({});
-  await CategoryModel.deleteMany({});
-  console.log("Cleared existing cards and categories");
+  await FlashcardModel.deleteMany({});
+  await TagModel.deleteMany({});
+  console.log("Cleared existing flashcards and tags");
 
-  const insertedCategories = await CategoryModel.insertMany(categories);
-  console.log(`Seeded ${insertedCategories.length} categories`);
+  const insertedTags = await TagModel.insertMany(tagDefinitions);
+  console.log(`Seeded ${insertedTags.length} tags`);
 
-  const categoryMap = Object.fromEntries(
-    insertedCategories.map((cat) => [cat.slug, cat._id]),
-  );
+  const tagMap = Object.fromEntries(insertedTags.map((tag) => [tag.slug, tag._id]));
 
-  const cards = [];
-  for (const [slug, cardDefs] of Object.entries(cardsByCategorySlug)) {
-    const categoryId = categoryMap[slug];
-    for (const card of cardDefs) {
-      cards.push({ ...card, category: categoryId });
-    }
-  }
+  const flashcardDocs = flashcards.map(({ tags, ...flashcard }) => ({
+    ...flashcard,
+    tags: tags.map((slug) => tagMap[slug]),
+  }));
 
-  const insertedCards = await CardModel.insertMany(cards);
-  console.log(`Seeded ${insertedCards.length} cards`);
+  const insertedFlashcards = await FlashcardModel.insertMany(flashcardDocs);
+  console.log(`Seeded ${insertedFlashcards.length} flashcards`);
 
-  for (const cat of insertedCategories) {
-    const catCards = insertedCards.filter(
-      (c) => c.category?.toString() === cat._id.toString(),
+  for (const tag of insertedTags) {
+    const tagFlashcards = insertedFlashcards.filter((f) =>
+      f.tags?.some((tagId) => tagId.toString() === tag._id.toString()),
     );
-    await CategoryModel.findByIdAndUpdate(cat._id, {
-      cards: catCards.map((c) => c._id),
+    await TagModel.findByIdAndUpdate(tag._id, {
+      flashcards: tagFlashcards.map((f) => f._id),
     });
   }
-  console.log("Updated category card references");
+  console.log("Updated tag flashcard references");
 
   await mongoose.disconnect();
   console.log("Done");

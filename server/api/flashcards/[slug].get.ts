@@ -1,7 +1,7 @@
-import { getCardsByCategories } from "~~/server/services/card.service";
+import { getFlashcardsByTags } from "~~/server/services/flashcard.service";
 
 export default defineEventHandler(async (event) => {
   const slug = getRouterParam(event, "slug");
   if (!slug) return [];
-  return await getCardsByCategories(slug);
+  return await getFlashcardsByTags(slug);
 });

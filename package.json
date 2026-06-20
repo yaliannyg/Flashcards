@@ -11,6 +11,8 @@
     "seed": "npx tsx server/scripts/seed.ts"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.2.0",
+    "@lucide/vue": "^1.21.0",
     "@tailwindcss/vite": "^4.2.4",
     "dotenv": "^17.4.2",
     "nuxt": "^4.4.4",

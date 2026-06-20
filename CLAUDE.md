@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-A personal flashcard study app built with Nuxt 4 and MongoDB Atlas. Users can create, read, update, and delete flashcards organized by category. No fixed subject — general purpose personal study.
+A personal flashcard study app built with Nuxt 4 and MongoDB Atlas. Users can create, read, update, and delete flashcards organized by tag, and play through them in a study session. No fixed subject — general purpose personal study.
 
 Solo project. Deployed to AWS.
 
@@ -36,7 +36,7 @@ The project follows a strict layered architecture. Always follow this pattern wh
 
 ```
 app/
-  components/       # Vue components
+  components/       # Vue components, grouped into per-domain subfolders (e.g. Flashcard/, UI/)
   composables/      # Reusable composition functions
   layouts/          # Nuxt layouts
   pages/            # File-based routes
@@ -53,6 +53,8 @@ shared/
   types/            # DTOs and interfaces shared between client and server
 ```
 
+Current resources: `flashcards` and `tags` (flashcards belong to one or more tags).
+
 ### Layer rules
 
 - **API handlers** (`server/api/`) are thin — they call a service and return the result. No business logic here.
@@ -66,23 +68,25 @@ shared/
 
 - Always use `<script setup lang="ts">` — never Options API, never `<script>` without `setup`.
 - Composition API only.
-- Components use PascalCase filenames (`Card.vue`, `CardsList.vue`).
+- Components use PascalCase filenames, grouped into per-domain subfolders (`Flashcard/Flashcard.vue`, `Flashcard/FlashcardStats.vue`, `UI/BaseButton.vue`).
 - Pages live in `app/pages/` and use Nuxt file-based routing.
-- Shared composables go in `app/composables/`.
+- Shared composables go in `app/composables/` (e.g. `useFlashcards`, `useSlug`).
 
 ## TypeScript Conventions
 
 - Use `type` imports (`import type { ... }`) for types/interfaces.
-- DB document types are named `*DB` (e.g., `CardDB`), derived via `InferSchemaType`.
-- Client-facing types are named `*DTO` (e.g., `CardDTO`) and live in `shared/types/`.
-- Use `~~/` alias for imports from the project root (e.g., `~~/shared/types/cards.types`).
+- DB document types are named `*DB` (e.g., `FlashcardDB`), derived via `InferSchemaType`.
+- Client-facing types are named `*DTO` (e.g., `FlashcardDTO`, `TagDTO`) and live in `shared/types/`.
+- Use `~~/` alias for imports from the project root (e.g., `~~/shared/types/flashcards.types`).
 
 ## API Route Naming
 
 Follow Nuxt Nitro conventions:
 
 ```
-server/api/cards/index.get.ts      # GET /api/cards
-server/api/cards/index.post.ts     # POST /api/cards
-server/api/cards/[slug].get.ts     # GET /api/cards/:slug
+server/api/flashcards/index.get.ts      # GET /api/flashcards
+server/api/flashcards/index.post.ts     # POST /api/flashcards
+server/api/flashcards/[slug].get.ts     # GET /api/flashcards/:slug
+server/api/flashcards/total.get.ts      # GET /api/flashcards/total
+server/api/tags/index.get.ts            # GET /api/tags
 ```

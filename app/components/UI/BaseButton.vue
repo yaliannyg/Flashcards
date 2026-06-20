@@ -1,20 +1,20 @@
 <template>
   <button
-    class="w-full py-2 px-4 text-on-muted bg-muted font-semibold text-xs capitalize rounded-md cursor-pointer"
-    @click="handleClick"
+    class="bg-primary rounded-lg h-fit py-2 px-4 font-semibold ml-auto text-white"
+    @click="emit('click')"
   >
-    <slot> </slot>
+    {{ label }}
   </button>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits<{
-  click: [event: MouseEvent];
-}>();
-
-function handleClick(event: MouseEvent) {
-  emit("click", event);
+interface Props {
+  label: string;
 }
+const props = defineProps<Props>();
+const emit = defineEmits<{
+  (e: "click"): void;
+}>();
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>
