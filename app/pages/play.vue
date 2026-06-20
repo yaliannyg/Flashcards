@@ -6,12 +6,14 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useFlashcards } from "#imports";
 
 const route = useRoute();
+const tag = computed(() => `${route.query.tag}`);
 
-const { flashcards } = useFlashcards(`${route.query.tag}`);
+const { flashcards } = useFlashcards(tag);
 </script>
 
 <style scoped></style>

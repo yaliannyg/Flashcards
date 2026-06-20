@@ -73,6 +73,10 @@ Current resources: `flashcards` and `tags` (flashcards belong to one or more tag
 - Shared composables go in `app/composables/` (e.g. `useFlashcards`, `useSlug`).
 - Do not use `withDefaults`. Static labels/text are module-level constants in `<script setup>`, not prop defaults.
 
+## Verification
+
+- Do not run the dev server or drive a browser to verify UI changes yourself (no `/run`, `/verify`, or ad-hoc dev server launches). Implement the change and let the user verify manually.
+
 ## Styling Conventions
 
 - Use canonical Tailwind CSS v4 utility classes — when a class has a deprecated or non-canonical alias (e.g. `shrink-0` not `flex-shrink-0`), prefer the canonical form.

@@ -1,6 +1,6 @@
 <template>
   <button
-    class="bg-primary rounded-lg h-fit py-2 px-4 font-semibold ml-auto text-white"
+    class="bg-primary rounded-lg h-fit py-2 px-4 font-semibold ml-auto text-white transition-opacity hover:opacity-80 border-primary-emphasis/25"
     @click="emit('click')"
   >
     {{ label }}

@@ -47,11 +47,17 @@
           {{ tag.flashcards?.length ?? 0 }}
         </span>
       </NuxtLink>
+      <TagInputRow
+        v-if="isAddingTag"
+        @save="handleSaveTag"
+        @cancel="isAddingTag = false"
+      />
     </div>
 
     <div class="px-4 py-5">
       <button
-        class="flex items-center justify-center gap-2 w-full py-2 rounded-lg text-xs transition-opacity hover:opacity-80 bg-surface-muted text-primary-emphasis font-semibold border-primary-emphasis/25 capitalize"
+        class="flex items-center justify-center gap-2 w-full py-2 rounded-lg text-xs transition-opacity hover:opacity-80 bg-primary text-white font-semibold border-primary-emphasis/25 capitalize"
+        @click="isAddingTag = true"
       >
         <Plus :size="13" :stroke-width="2.5" />
         new tag
@@ -62,14 +68,22 @@
 
 <script setup lang="ts">
 import { Plus, Tag } from "@lucide/vue";
-import type { TagDTO } from "~~/shared/types/tags.types";
+import { ref } from "vue";
+import TagInputRow from "./Tags/TagInputRow.vue";
 
 const ALL_TAGS_LABEL = "All";
 
-const { data: tags } = await useFetch<TagDTO[]>("/api/tags");
+const { tags, createTag } = await useTags();
 const { data: totalAmountFlashcards } = await useFetch<number>(
   "/api/flashcards/total",
 );
+
+const isAddingTag = ref(false);
+
+const handleSaveTag = async (name: string) => {
+  await createTag(name);
+  isAddingTag.value = false;
+};
 </script>
 
 <style scoped></style>
