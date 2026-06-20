@@ -1,43 +1,41 @@
 <template>
   <aside
-    className="flex flex-col shrink-0 h-screen w-48 border-r border-border bg-surface "
+    class="flex flex-col shrink-0 h-screen w-48 border-r border-border bg-surface"
   >
-    <!-- {/* Section title */} -->
-    <div className="px-5 pt-6 pb-3">
+    <div class="px-5 pt-6 pb-3">
       <span
-        className="text-xxs tracking-widest uppercase text-text-heading font-semibold"
+        class="text-xxs tracking-widest uppercase text-text-heading font-semibold"
       >
         Tags
       </span>
     </div>
 
-    <!-- {/* Tag list */} -->
-    <div className="flex-1 overflow-y-auto px-3 space-y-px">
+    <div class="flex-1 overflow-y-auto px-3 space-y-px">
       <div
         v-for="tag in tags"
         :key="tag.label"
-        className="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer group"
+        class="flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer group"
         :style="{ transition: 'background 0.15s' }"
       >
-        <div className="flex items-center gap-2.5">
+        <div class="flex items-center gap-2.5">
           <Tag :size="12" class="text-text-heading" />
-          <span className="text-xs text-text-muted font-normal">
+          <span class="text-xs text-text-muted font-normal">
             {{ tag.label }}
           </span>
         </div>
         <span
-          className="text-xxs px-1.5 py-0.5 rounded-full bg-surface-muted text-text-muted "
+          class="text-xxs px-1.5 py-0.5 rounded-full bg-surface-muted text-text-muted"
         >
           {{ tag.count }}
         </span>
       </div>
     </div>
 
-    <div className="px-4 py-5">
+    <div class="px-4 py-5">
       <button
-        className="flex items-center justify-center gap-2 w-full py-2 rounded-lg text-xs transition-opacity hover:opacity-80 bg-surface-muted text-primary-emphasis font-semibold border-primary-emphasis/25 capitalize"
+        class="flex items-center justify-center gap-2 w-full py-2 rounded-lg text-xs transition-opacity hover:opacity-80 bg-surface-muted text-primary-emphasis font-semibold border-primary-emphasis/25 capitalize"
       >
-        <Plus :size="13" strokeWidth="{2.5}" />
+        <Plus :size="13" :stroke-width="2.5" />
         new tag
       </button>
     </div>

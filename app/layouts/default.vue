@@ -10,7 +10,7 @@
           class="flex flex-col items-baseline justify-center gap-1 text-lg text-text-base font-semibold"
         >
           <h1>My catalog</h1>
-          <p className="mt-1 text-xs text-text-heading font-normal">
+          <p class="mt-1 text-xs text-text-heading font-normal">
             <span v-if="childRef">childRef.flashCardsLength</span>
             <span v-else>0</span>
             flashcard sets

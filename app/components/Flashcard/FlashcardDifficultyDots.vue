@@ -1,5 +1,5 @@
 <template>
-  <div className="flex flex-col items-center gap-1 shrink-0 ">
+  <div class="flex flex-col items-center gap-1 shrink-0 ">
     <div class="flex items-center gap-1">
       <div
         v-for="i in totalDots"
