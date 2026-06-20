@@ -4,6 +4,7 @@ import type { InferSchemaType } from "mongoose";
 const flashcardSchema = new Schema(
   {
     question: { type: String, required: true },
+    answer: { type: String, required: true },
     tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
     stats: {
       successes: { type: Number, default: 0 },

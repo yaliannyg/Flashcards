@@ -4,12 +4,13 @@ import { TagModel } from "../models/Tags";
 
 interface CreateFlashcardInput {
   question: string;
+  answer: string;
   /** Tag ids this flashcard belongs to. */
   tags?: string[];
 }
 
-export const createFlashcard = async ({ question, tags }: CreateFlashcardInput) => {
-  const flashcard = await FlashcardModel.create({ question, tags });
+export const createFlashcard = async ({ question, answer, tags }: CreateFlashcardInput) => {
+  const flashcard = await FlashcardModel.create({ question, answer, tags });
   return toFlashcardDTO(flashcard);
 };
 

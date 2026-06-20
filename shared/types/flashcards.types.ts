@@ -10,6 +10,7 @@ export interface FlashcardStats {
 export interface FlashcardDTO {
   id: string;
   question: string;
+  answer: string;
   /** Topic tags rendered as pills in the header. */
   tags?: TagDTO[];
   /** Success/failure review counters. */

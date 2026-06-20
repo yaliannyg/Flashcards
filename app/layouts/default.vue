@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex max-w-7xl size-full h-screen m-auto text-xs  overflow-hidden bg-background"
+    class="flex max-w-7xl size-full h-screen m-auto text-xs overflow-hidden bg-background"
   >
     <Sidebar />
 
@@ -11,8 +11,7 @@
         >
           <h1>My catalog</h1>
           <p class="mt-1 text-xs text-text-heading font-normal">
-            <span v-if="childRef">childRef.flashCardsLength</span>
-            <span v-else>0</span>
+            {{ totalAmountFlashcards ?? 0 }}
             flashcard sets
           </p>
         </div>
@@ -29,9 +28,8 @@
 <script setup lang="ts">
 import BaseButton from "@/components/UI/BaseButton.vue";
 import Sidebar from "@/components/Sidebar.vue";
-import { ref } from "vue";
 
-const childRef = ref(null);
+const { data: totalAmountFlashcards } = await useFetch<number>("/api/flashcards/total");
 
 function handleAddFlashCard() {
   console.log("TO DO");

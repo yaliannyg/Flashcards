@@ -13,22 +13,19 @@
     </header>
 
     <!-- Content area -->
-    <div class="flex flex-1 overflow-hidden">
-      <!-- Left: Question -->
-      <FlashcardQuestion :question="question" />
-
-      <!-- Vertical divider -->
-      <div class="w-px shrink-0 bg-border" />
-
-      <!-- Right: Review stats -->
-
-      <FlashcardStats :statSuccess="statSuccess" :statFailures="statFailures" />
-    </div>
+    <FlashcardAnswer :answer="answer" v-if="isAnswerRevealed" />
+    <FlashcardQuestion
+      v-else
+      :question="question"
+      :statSuccess="statSuccess"
+      :statFailures="statFailures"
+    />
 
     <!-- Reveal Answer button -->
     <button
       type="button"
       class="h-auto py-1 w-full shrink-0 cursor-pointer border-none bg-primary text-xs font-semibold tracking-[0.01em] text-text-base transition-opacity hover:opacity-90 active:opacity-80"
+      @click="isAnswerRevealed = !isAnswerRevealed"
     >
       {{ revealLabel }}
     </button>
@@ -36,8 +33,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import type { FlashcardDTO } from "~~/shared/types/flashcards.types";
+import FlashcardAnswer from "./FlashcardAnswer.vue";
 import FlashcardDifficultyDots from "./FlashcardDifficultyDots.vue";
 import FlashcardQuestion from "./FlashcardQuestion.vue";
 import FlashcardStats from "./FlashcardStats.vue";
@@ -45,10 +43,14 @@ import FlashcardTag from "./FlashcardTag.vue";
 
 type Props = Omit<FlashcardDTO, "id">;
 
-const { dotsActive = 0, tags, stats } = defineProps<Props>();
+const { dotsActive = 0, stats } = defineProps<Props>();
 
 const statSuccess = computed(() => (stats ? stats.successes : 0));
 const statFailures = computed(() => (stats ? stats.failures : 0));
 
-const revealLabel = "Reveal Answer";
+const isAnswerRevealed = ref(false);
+
+const revealLabel = computed(() =>
+  isAnswerRevealed.value ? "Show Question" : "Reveal Answer",
+);
 </script>

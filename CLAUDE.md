@@ -71,6 +71,11 @@ Current resources: `flashcards` and `tags` (flashcards belong to one or more tag
 - Components use PascalCase filenames, grouped into per-domain subfolders (`Flashcard/Flashcard.vue`, `Flashcard/FlashcardStats.vue`, `UI/BaseButton.vue`).
 - Pages live in `app/pages/` and use Nuxt file-based routing.
 - Shared composables go in `app/composables/` (e.g. `useFlashcards`, `useSlug`).
+- Do not use `withDefaults`. Static labels/text are module-level constants in `<script setup>`, not prop defaults.
+
+## Styling Conventions
+
+- Use canonical Tailwind CSS v4 utility classes — when a class has a deprecated or non-canonical alias (e.g. `shrink-0` not `flex-shrink-0`), prefer the canonical form.
 
 ## TypeScript Conventions
 

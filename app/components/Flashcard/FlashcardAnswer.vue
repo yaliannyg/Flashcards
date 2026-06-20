@@ -7,10 +7,10 @@
       <p
         class="mb-2.5 text-xxs font-semibold tracking-[0.18em] text-text-heading uppercase"
       >
-        {{ questionLabel }}
+        {{ answerLabel }}
       </p>
       <p class="text-[13px] leading-relaxed font-normal text-text-base">
-        {{ question }}
+        {{ answer }}
       </p>
     </div>
 
@@ -19,21 +19,17 @@
 
     <!-- Right: Review stats -->
 
-    <FlashcardStats :statSuccess="statSuccess" :statFailures="statFailures" />
+    <FlashcardReviewActions />
   </div>
 </template>
 
 <script setup lang="ts">
-import FlashcardStats from "./FlashcardStats.vue";
-
-interface FlashCardQuestionsProps {
-  question: string;
-  statSuccess: number;
-  statFailures: number;
+interface FlashCardAnswerProps {
+  answer: string;
 }
-defineProps<FlashCardQuestionsProps>();
+defineProps<FlashCardAnswerProps>();
 
-const questionLabel = "question";
+const answerLabel = "answer";
 </script>
 
 <style scoped></style>

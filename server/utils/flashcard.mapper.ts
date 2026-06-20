@@ -18,6 +18,7 @@ export const toFlashcardDTO = (flashcard: FlashcardDB): FlashcardDTO => {
   return {
     id: flashcard._id.toString(),
     question: flashcard.question,
+    answer: flashcard.answer,
     tags,
     stats: flashcard.stats,
     dotsActive: flashcard.dotsActive,
