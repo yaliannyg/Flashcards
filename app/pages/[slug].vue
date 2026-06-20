@@ -4,7 +4,7 @@ import { useFlashcards } from "#imports";
 import { useSlug } from "~/composables/useSlug";
 
 const slug = useSlug();
-const { flashcards } = await useFlashcards(slug.slugName.value);
+const { flashcards } = useFlashcards(slug.slugName);
 </script>
 
 <template>
