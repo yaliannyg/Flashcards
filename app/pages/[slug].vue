@@ -3,6 +3,10 @@ import Flashcard from "@/components/Flashcard/Flashcard.vue";
 import { useFlashcards } from "#imports";
 import { useSlug } from "~/composables/useSlug";
 
+definePageMeta({
+  layout: "home",
+});
+
 const slug = useSlug();
 const { flashcards } = useFlashcards(slug.slugName);
 </script>

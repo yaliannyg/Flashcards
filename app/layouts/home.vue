@@ -10,9 +10,9 @@
           class="flex flex-col items-baseline justify-center gap-1 text-lg text-text-base font-semibold"
         >
           <h1>My catalog</h1>
-          <p  class="mt-1 text-xs text-text-heading font-normal">
+          <p class="mt-1 text-xs text-text-heading font-normal">
             <span v-if="status === 'success'">{{ totalAmountFlashcards }}</span>
-            
+
             flashcard sets
           </p>
         </div>
@@ -32,11 +32,12 @@ import Sidebar from "@/components/Sidebar.vue";
 import { useFlashcards } from "#imports";
 import { useSlug } from "~/composables/useSlug";
 
+const router = useRouter();
 const slug = useSlug();
 const { totalAmountFlashcards, status } = useFlashcards(slug.slugName);
 
 function handleAddFlashCard() {
-  console.log("TO DO");
+  router.push("/add-flashcards");
 }
 </script>
 

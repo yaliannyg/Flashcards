@@ -10,6 +10,10 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useFlashcards } from "#imports";
 
+definePageMeta({
+  layout: "home",
+});
+
 const route = useRoute();
 const tag = computed(() => `${route.query.tag}`);
 

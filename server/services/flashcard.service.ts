@@ -15,17 +15,18 @@ export const createFlashcard = async ({ question, answer, tags }: CreateFlashcar
 };
 
 export async function getAllFlashcards() {
-  const flashcards = await FlashcardModel.find().populate("tags", "slug name");
+  const flashcards = await FlashcardModel.find()
+    .sort({ createdAt: -1 })
+    .populate("tags", "slug name");
   return flashcards.map(toFlashcardDTO);
 }
 
 export async function getFlashcardsByTags(slug: string) {
   const tag = await TagModel.findOne({ slug });
   if (!tag) return [];
-  const flashcards = await FlashcardModel.find({ tags: tag._id }).populate(
-    "tags",
-    "slug name",
-  );
+  const flashcards = await FlashcardModel.find({ tags: tag._id })
+    .sort({ createdAt: -1 })
+    .populate("tags", "slug name");
   return flashcards.map(toFlashcardDTO);
 }
 
