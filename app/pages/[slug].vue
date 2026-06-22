@@ -8,7 +8,7 @@ definePageMeta({
 });
 
 const slug = useSlug();
-const { flashcards } = useFlashcards(slug.slugName);
+const { flashcards, deleteFlashcard } = useFlashcards(slug.slugName);
 </script>
 
 <template>
@@ -22,6 +22,7 @@ const { flashcards } = useFlashcards(slug.slugName);
       :tags="tags"
       :stats="stats"
       :dotsActive="dotsActive"
+      @delete="deleteFlashcard"
     />
   </div>
 </template>

@@ -6,6 +6,14 @@
       class="flex shrink-0 items-start justify-between gap-2 px-3 pt-3 pb-2"
     >
       <div class="flex items-center gap-1 overflow-hidden">
+        <button
+          type="button"
+          class="shrink-0 cursor-pointer rounded p-0.5 text-text-muted transition-colors hover:text-red-500"
+          aria-label="Delete flashcard"
+          @click="handleDelete"
+        >
+          <X :size="14" />
+        </button>
         <FlashcardTag v-for="tag in tags" :key="tag.id" :label="tag.name" />
       </div>
 
@@ -40,6 +48,7 @@
 </template>
 
 <script setup lang="ts">
+import { X } from "@lucide/vue";
 import { computed, ref } from "vue";
 import type {
   FlashcardDTO,
@@ -53,6 +62,10 @@ import FlashcardTag from "./FlashcardTag.vue";
 type Props = Omit<FlashcardDTO, "id"> & { cardId: string };
 
 const { cardId, dotsActive = 0, stats } = defineProps<Props>();
+
+const emit = defineEmits<{ delete: [id: string] }>();
+
+const handleDelete = () => emit("delete", cardId);
 
 const successes = ref(stats?.successes ?? 0);
 const failures = ref(stats?.failures ?? 0);

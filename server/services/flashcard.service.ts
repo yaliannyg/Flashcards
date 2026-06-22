@@ -74,6 +74,21 @@ export const updateFlashcard = async (id: string, input: UpdateFlashcardInput) =
   return flashcard ? toFlashcardDTO(flashcard) : null;
 };
 
+export const deleteFlashcard = async (id: string) => {
+  const flashcard = await FlashcardModel.findById(id);
+  if (!flashcard) return null;
+
+  // Pull this flashcard's id from every tag that references it.
+  await TagModel.updateMany(
+    { _id: { $in: flashcard.tags } },
+    { $pull: { flashcards: flashcard._id } },
+  );
+
+  await flashcard.deleteOne();
+
+  return { id: flashcard._id.toString() };
+};
+
 export async function getAllFlashcards() {
   const flashcards = await FlashcardModel.find()
     .sort({ createdAt: -1 })
