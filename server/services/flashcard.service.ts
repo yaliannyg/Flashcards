@@ -11,6 +11,14 @@ interface CreateFlashcardInput {
 
 export const createFlashcard = async ({ question, answer, tags }: CreateFlashcardInput) => {
   const flashcard = await FlashcardModel.create({ question, answer, tags });
+
+  if (tags?.length) {
+    await TagModel.updateMany(
+      { _id: { $in: tags } },
+      { $addToSet: { flashcards: flashcard._id } },
+    );
+  }
+
   return toFlashcardDTO(flashcard);
 };
 

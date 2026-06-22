@@ -41,11 +41,21 @@
             {{ tag.name }}
           </span>
         </div>
-        <span
-          class="text-xxs px-1.5 py-0.5 rounded-full bg-surface-muted text-text-muted"
-        >
-          {{ tag.flashcards?.length ?? 0 }}
-        </span>
+        <div class="flex items-center gap-1.5 relative">
+          <span
+            class="text-xxs px-1.5 py-0.5 rounded-full bg-surface-muted text-text-muted"
+          >
+            {{ tag.flashcardCount }}
+          </span>
+          <button
+            type="button"
+            class="absolute left-5 p-1 rounded text-text-muted opacity-0 group-hover:opacity-100 hover:text-red-500 transition-opacity"
+            aria-label="Delete tag"
+            @click.prevent.stop="handleDeleteTag(tag.slug)"
+          >
+            <Trash2 :size="12" />
+          </button>
+        </div>
       </NuxtLink>
       <TagInputRow
         v-if="isAddingTag"
@@ -67,15 +77,16 @@
 </template>
 
 <script setup lang="ts">
-import { Plus, Tag } from "@lucide/vue";
+import { Plus, Tag, Trash2 } from "@lucide/vue";
 import { ref } from "vue";
 import TagInputRow from "./Tags/TagInputRow.vue";
 
 const ALL_TAGS_LABEL = "All";
 
-const { tags, createTag } = await useTags();
+const { tags, createTag, deleteTag } = await useTags();
 const { data: totalAmountFlashcards } = await useFetch<number>(
   "/api/flashcards/total",
+  { key: "flashcards-total" },
 );
 
 const isAddingTag = ref(false);
@@ -83,6 +94,15 @@ const isAddingTag = ref(false);
 const handleSaveTag = async (name: string) => {
   await createTag(name);
   isAddingTag.value = false;
+};
+
+const route = useRoute();
+
+const handleDeleteTag = async (slug: string) => {
+  await deleteTag(slug);
+  if (route.params.slug === slug) {
+    await navigateTo("/");
+  }
 };
 </script>
 

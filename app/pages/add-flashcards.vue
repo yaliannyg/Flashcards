@@ -60,6 +60,8 @@ async function handleSave() {
     },
   });
 
+  await refreshNuxtData(["tags", "flashcards-total"]);
+
   await navigateTo("/");
 }
 </script>
