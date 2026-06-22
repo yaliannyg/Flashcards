@@ -25,7 +25,7 @@ export function useFlashcards(url: string | Ref<string>) {
   });
 
   const deleteFlashcard = async (id: string) => {
-    await $fetch(`/api/flashcards/${id}`, { method: "DELETE" });
+    await $fetch(`/api/flashcards/${id}` as "/api/flashcards/:id", { method: "DELETE" });
 
     // Drop the card from the current list immediately for instant feedback.
     if (flashcards.value) {

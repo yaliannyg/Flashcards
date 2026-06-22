@@ -96,6 +96,11 @@ export async function getAllFlashcards() {
   return flashcards.map(toFlashcardDTO);
 }
 
+export async function getFlashcardById(id: string) {
+  const flashcard = await FlashcardModel.findById(id).populate("tags", "slug name");
+  return flashcard ? toFlashcardDTO(flashcard) : null;
+}
+
 export async function getFlashcardsByTags(slug: string) {
   const tag = await TagModel.findOne({ slug });
   if (!tag) return [];

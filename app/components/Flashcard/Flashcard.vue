@@ -16,7 +16,6 @@
         </button>
         <FlashcardTag v-for="tag in tags" :key="tag.id" :label="tag.name" />
       </div>
-
       <FlashcardDifficultyDots
         :active-dots="difficulty"
         @select="handleDifficulty"
@@ -24,17 +23,27 @@
     </header>
 
     <!-- Content area -->
-    <FlashcardAnswer
-      :answer="answer"
-      v-if="isAnswerRevealed"
-      @review="handleReview"
-    />
-    <FlashcardQuestion
-      v-else
-      :question="question"
-      :statSuccess="successes"
-      :statFailures="failures"
-    />
+    <div class="group relative flex flex-1 overflow-hidden">
+      <button
+        type="button"
+        class="absolute top-2 right-18 z-10 cursor-pointer rounded p-0.5 text-text-muted opacity-0 transition group-hover:opacity-100 hover:text-primary"
+        aria-label="Edit flashcard"
+        @click="handleEdit"
+      >
+        <Pencil :size="14" />
+      </button>
+      <FlashcardAnswer
+        :answer="answer"
+        v-if="isAnswerRevealed"
+        @review="handleReview"
+      />
+      <FlashcardQuestion
+        v-else
+        :question="question"
+        :statSuccess="successes"
+        :statFailures="failures"
+      />
+    </div>
 
     <!-- Reveal Answer button -->
     <button
@@ -48,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { X } from "@lucide/vue";
+import { Pencil, X } from "@lucide/vue";
 import { computed, ref } from "vue";
 import type {
   FlashcardDTO,
@@ -67,6 +76,8 @@ const emit = defineEmits<{ delete: [id: string] }>();
 
 const handleDelete = () => emit("delete", cardId);
 
+const handleEdit = () => navigateTo(`/edit/${cardId}`);
+
 const successes = ref(stats?.successes ?? 0);
 const failures = ref(stats?.failures ?? 0);
 const difficulty = ref(dotsActive);
@@ -79,7 +90,7 @@ const handleDifficulty = async (value: number) => {
   difficulty.value = value === previous ? 0 : value;
 
   try {
-    await $fetch(`/api/flashcards/${cardId}`, {
+    await $fetch(`/api/flashcards/${cardId}` as "/api/flashcards/:id", {
       method: "PATCH",
       body: { dotsActive: difficulty.value },
     });
@@ -97,7 +108,7 @@ const handleReview = async (result: ReviewResult) => {
   isAnswerRevealed.value = false;
 
   try {
-    await $fetch(`/api/flashcards/${cardId}`, {
+    await $fetch(`/api/flashcards/${cardId}` as "/api/flashcards/:id", {
       method: "PATCH",
       body: {
         stats: { successes: successes.value, failures: failures.value },
