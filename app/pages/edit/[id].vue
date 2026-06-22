@@ -6,17 +6,19 @@
     </header>
 
     <CreateCard
-      v-model:question="question"
-      v-model:answer="answer"
+      v-model:cards="cards"
       v-model:tags="tags"
       :errors="errors"
+      :multiple="false"
       class="flex-1"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import CreateCard from "@/components/CreateCard/CreateCard.vue";
+import CreateCard, {
+  type CardInput,
+} from "@/components/CreateCard/CreateCard.vue";
 import BaseButton from "@/components/UI/BaseButton.vue";
 import { reactive, ref } from "vue";
 import type { FlashcardDTO } from "~~/shared/types/flashcards.types";
@@ -41,31 +43,44 @@ const { data: flashcard } = await useFetch<FlashcardDTO>(
   { key: `flashcard:${id}` },
 );
 
-const question = ref(flashcard.value?.question ?? "");
-const answer = ref(flashcard.value?.answer ?? "");
+const cards = ref<CardInput[]>([
+  {
+    question: flashcard.value?.question ?? "",
+    answer: flashcard.value?.answer ?? "",
+  },
+]);
 const tags = ref<TagDTO[]>(flashcard.value?.tags ?? []);
 
-const errors = reactive({
-  question: "",
-  answer: "",
+const errors = reactive<{
+  cards: { question: string; answer: string }[];
+  tags: string;
+}>({
+  cards: [],
   tags: "",
 });
 
 function validate() {
-  errors.question = question.value.trim() ? "" : QUESTION_REQUIRED;
-  errors.answer = answer.value.trim() ? "" : ANSWER_REQUIRED;
+  const card = cards.value[0]!;
   errors.tags = tags.value.length ? "" : TAGS_REQUIRED;
-  return !errors.question && !errors.answer && !errors.tags;
+  errors.cards = [
+    {
+      question: card.question.trim() ? "" : QUESTION_REQUIRED,
+      answer: card.answer.trim() ? "" : ANSWER_REQUIRED,
+    },
+  ];
+  return !errors.tags && !errors.cards[0]!.question && !errors.cards[0]!.answer;
 }
 
 async function handleSave() {
   if (!validate()) return;
 
+  const card = cards.value[0]!;
+
   await $fetch(`/api/flashcards/${id}` as "/api/flashcards/:id", {
     method: "PATCH",
     body: {
-      question: question.value.trim(),
-      answer: answer.value.trim(),
+      question: card.question.trim(),
+      answer: card.answer.trim(),
       tags: tags.value.map((tag) => tag.id),
     },
   });
