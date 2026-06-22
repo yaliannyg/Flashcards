@@ -9,12 +9,8 @@
         <div
           class="flex flex-col items-baseline justify-center gap-1 text-lg text-text-base font-semibold"
         >
-          <h1>My catalog</h1>
-          <p class="mt-1 text-xs text-text-heading font-normal">
-            <span v-if="status === 'success'">{{ totalAmountFlashcards }}</span>
-
-            flashcard sets
-          </p>
+          <h1>Flashcards</h1>
+        
         </div>
         <BaseButton label="Add Flash Card" @click="handleAddFlashCard" />
       </div>
