@@ -16,6 +16,7 @@ const { flashcards } = useFlashcards(slug.slugName);
     <Flashcard
       v-for="{ id, tags, question, answer, stats, dotsActive } in flashcards"
       :key="id"
+      :card-id="id"
       :question="question"
       :answer="answer"
       :tags="tags"

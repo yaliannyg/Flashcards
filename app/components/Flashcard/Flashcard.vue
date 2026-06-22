@@ -13,12 +13,16 @@
     </header>
 
     <!-- Content area -->
-    <FlashcardAnswer :answer="answer" v-if="isAnswerRevealed" />
+    <FlashcardAnswer
+      :answer="answer"
+      v-if="isAnswerRevealed"
+      @review="handleReview"
+    />
     <FlashcardQuestion
       v-else
       :question="question"
-      :statSuccess="statSuccess"
-      :statFailures="statFailures"
+      :statSuccess="successes"
+      :statFailures="failures"
     />
 
     <!-- Reveal Answer button -->
@@ -34,21 +38,44 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import type { FlashcardDTO } from "~~/shared/types/flashcards.types";
+import type {
+  FlashcardDTO,
+  ReviewResult,
+} from "~~/shared/types/flashcards.types";
 import FlashcardAnswer from "./FlashcardAnswer.vue";
 import FlashcardDifficultyDots from "./FlashcardDifficultyDots.vue";
 import FlashcardQuestion from "./FlashcardQuestion.vue";
-import FlashcardStats from "./FlashcardStats.vue";
 import FlashcardTag from "./FlashcardTag.vue";
 
-type Props = Omit<FlashcardDTO, "id">;
+type Props = Omit<FlashcardDTO, "id"> & { cardId: string };
 
-const { dotsActive = 0, stats } = defineProps<Props>();
+const { cardId, dotsActive = 0, stats } = defineProps<Props>();
 
-const statSuccess = computed(() => (stats ? stats.successes : 0));
-const statFailures = computed(() => (stats ? stats.failures : 0));
+const successes = ref(stats?.successes ?? 0);
+const failures = ref(stats?.failures ?? 0);
 
 const isAnswerRevealed = ref(false);
+
+const handleReview = async (result: ReviewResult) => {
+  if (result === "correct") successes.value += 1;
+  else failures.value += 1;
+
+  // Back to the default state so the next card is ready to review.
+  isAnswerRevealed.value = false;
+
+  try {
+    await $fetch(`/api/flashcards/${cardId}`, {
+      method: "PATCH",
+      body: {
+        stats: { successes: successes.value, failures: failures.value },
+      },
+    });
+  } catch {
+    // Revert the optimistic update if persisting failed.
+    if (result === "correct") successes.value -= 1;
+    else failures.value -= 1;
+  }
+};
 
 const revealLabel = computed(() =>
   isAnswerRevealed.value ? "Show Question" : "Reveal Answer",

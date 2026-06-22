@@ -1,5 +1,8 @@
 import type { TagDTO } from "./tags.types";
 
+/** Outcome of reviewing a flashcard during a study session. */
+export type ReviewResult = "correct" | "incorrect";
+
 export interface FlashcardStats {
   /** Number of times this flashcard was answered correctly. */
   successes: number;

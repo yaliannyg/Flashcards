@@ -19,15 +19,21 @@
 
     <!-- Right: Review stats -->
 
-    <FlashcardReviewActions />
+    <FlashcardReviewActions @review="emit('review', $event)" />
   </div>
 </template>
 
 <script setup lang="ts">
+import type { ReviewResult } from "~~/shared/types/flashcards.types";
+
 interface FlashCardAnswerProps {
   answer: string;
 }
 defineProps<FlashCardAnswerProps>();
+
+const emit = defineEmits<{
+  review: [result: ReviewResult];
+}>();
 
 const answerLabel = "answer";
 </script>
