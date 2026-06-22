@@ -9,7 +9,10 @@
         <FlashcardTag v-for="tag in tags" :key="tag.id" :label="tag.name" />
       </div>
 
-      <FlashcardDifficultyDots :active-dots="dotsActive" />
+      <FlashcardDifficultyDots
+        :active-dots="difficulty"
+        @select="handleDifficulty"
+      />
     </header>
 
     <!-- Content area -->
@@ -53,8 +56,25 @@ const { cardId, dotsActive = 0, stats } = defineProps<Props>();
 
 const successes = ref(stats?.successes ?? 0);
 const failures = ref(stats?.failures ?? 0);
+const difficulty = ref(dotsActive);
 
 const isAnswerRevealed = ref(false);
+
+const handleDifficulty = async (value: number) => {
+  const previous = difficulty.value;
+  // Clicking the active dot count again clears the difficulty.
+  difficulty.value = value === previous ? 0 : value;
+
+  try {
+    await $fetch(`/api/flashcards/${cardId}`, {
+      method: "PATCH",
+      body: { dotsActive: difficulty.value },
+    });
+  } catch {
+    // Revert the optimistic update if persisting failed.
+    difficulty.value = previous;
+  }
+};
 
 const handleReview = async (result: ReviewResult) => {
   if (result === "correct") successes.value += 1;
