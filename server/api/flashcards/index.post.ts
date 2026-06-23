@@ -1,6 +1,11 @@
 import { createFlashcard } from "~~/server/services/flashcard.service";
+import { handleApiError } from "~~/server/utils/handle-error";
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
-  return createFlashcard(body);
+  try {
+    const body = await readBody(event);
+    return await createFlashcard(body);
+  } catch (error) {
+    handleApiError(error, "POST /api/flashcards");
+  }
 });
