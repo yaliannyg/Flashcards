@@ -19,11 +19,23 @@
       </button>
     </div>
 
-    <div
-      v-if="activeTab === 'questions'"
-      class="flex flex-col flex-1 min-h-0"
-    >
-      <div class="flex-1 overflow-y-auto px-3 py-3 space-y-px">
+    <div v-if="activeTab === 'questions'" class="flex flex-col flex-1 min-h-0">
+      <div class="px-4 my-4">
+         <label
+          for="search-question"
+          class="text-xxs font-semibold tracking-[0.18em] text-text-heading uppercase"
+        >
+          {{ SEARCH_LABEL }}
+        </label>
+        <input
+          id="search-question"
+          v-model="search"
+          type="text"
+          class="rounded-lg w-full border border-border bg-surface-muted px-3 py-1 text-xxs text-text-base placeholder:text-text-heading outline-none focus:border-primary-emphasis"
+        />
+        </div>
+      <div class="flex-1 overflow-y-auto px-3 pb-3 space-y-px">
+     
         <NuxtLink
           v-for="flashcard in sortedFlashcards"
           :key="flashcard.id"
@@ -123,19 +135,29 @@ type TabId = "tags" | "questions";
 
 const ALL_TAGS_LABEL = "All";
 const NO_QUESTIONS_LABEL = "No flashcards yet";
+const SEARCH_LABEL = "Search";
 const TABS: { id: TabId; label: string }[] = [
   { id: "tags", label: "Tags" },
   { id: "questions", label: "Questions" },
 ];
 
 const activeTab = ref<TabId>("tags");
+const search = ref("");
 
 const slug = useSlug();
 const { flashcards } = useFlashcards(slug.slugName);
 const store = useStudyStore();
 
+const searchedFlashCards = computed(() => {
+  return search.value.length
+    ? flashcards.value.filter((flashcard) =>
+        flashcard.question.toLowerCase().startsWith(search.value.toLowerCase()),
+      )
+    : flashcards.value;
+});
+
 const sortedFlashcards = computed(() =>
-  [...(flashcards.value ?? [])].sort((a, b) =>
+  [...(searchedFlashCards.value ?? [])].sort((a, b) =>
     a.question.localeCompare(b.question),
   ),
 );
