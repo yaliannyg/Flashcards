@@ -2,7 +2,7 @@
 
 A personal flashcard study app built with **Nuxt 4** and **MongoDB Atlas**. Create, organize, and review flashcards grouped by tag, track how often you get each card right or wrong, and rate each card's difficulty. It's a general-purpose study tool with no fixed subject.
 
-> Solo project, deployed to AWS.
+> Solo project.
 
 ---
 
