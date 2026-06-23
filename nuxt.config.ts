@@ -8,6 +8,9 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
   css: ["./app/assets/css/main.css"],
+  nitro: {
+    preset: "netlify",
+  },
   modules: ["nuxt-mongoose"],
   runtimeConfig: {
     // Owner credentials checked server-side on sign in. Never exposed to the client.

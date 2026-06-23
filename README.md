@@ -210,13 +210,28 @@ server/api/flashcards/total.get.ts       # GET    /api/flashcards/total
 
 ## Deployment
 
-The app is deployed to **AWS**. Build the application for production with:
+The app is deployed to **Netlify**. Nuxt's Nitro engine auto-detects Netlify and builds the `server/api/` routes as Netlify Functions — the preset is also set explicitly in `nuxt.config.ts` (`nitro.preset: "netlify"`), and build settings live in `netlify.toml`.
+
+### Setup
+
+1. Connect the repository to a Netlify site (Netlify auto-detects the Nuxt build).
+2. Configure the following environment variables in **Site settings → Environment variables**:
+
+   | Variable        | Description                                       |
+   |-----------------|---------------------------------------------------|
+   | `MONGOOSE_URI`  | MongoDB Atlas connection string                   |
+   | `AUTH_EMAIL`    | Owner email, checked server-side on sign in       |
+   | `AUTH_PASSWORD` | Owner password, checked server-side on sign in    |
+
+3. In MongoDB Atlas, allow network access from anywhere (`0.0.0.0/0`), since Netlify Functions run on dynamic IPs.
+
+Pushing to the connected branch triggers a build and deploy automatically. To build locally first:
 
 ```bash
 npm run build
 ```
 
-This produces a Nitro server build in `.output/`, which can be run with `node .output/server/index.mjs`. Ensure `NUXT_MONGOOSE_URI` is configured in the production environment. See the [Nuxt deployment documentation](https://nuxt.com/docs/getting-started/deployment) for platform-specific guidance.
+See the [Nuxt deployment documentation](https://nuxt.com/docs/getting-started/deployment#netlify) for more.
 
 ---
 

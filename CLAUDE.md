@@ -4,7 +4,7 @@
 
 A personal flashcard study app built with Nuxt 4 and MongoDB Atlas. Users can create, read, update, and delete flashcards organized by tag, and play through them in a study session. No fixed subject — general purpose personal study.
 
-Solo project. Deployed to AWS.
+Solo project. Deployed to Netlify.
 
 ## Tech Stack
 
