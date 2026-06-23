@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="flex flex-col shrink-0 h-screen w-48 border-r border-border bg-surface"
+    class="flex flex-col shrink-0 h-dvh w-48 border-r border-border bg-surface"
   >
     <div class="flex border-b border-border">
       <button

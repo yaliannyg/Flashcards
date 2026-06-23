@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex max-w-7xl size-full h-screen m-auto text-xs overflow-hidden bg-background"
+    class="flex max-w-7xl size-full h-dvh m-auto text-xs overflow-hidden bg-background"
   >
     <Sidebar />
 
