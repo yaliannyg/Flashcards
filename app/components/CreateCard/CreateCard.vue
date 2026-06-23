@@ -33,7 +33,7 @@
           </button>
         </div>
 
-        <div class="grid h-64 grid-cols-2 gap-5">
+        <div class="grid h-64 sm:grid-cols-2 gap-5">
           <CreateCardField
             :id="`question-${index}`"
             v-model="card.question"

@@ -5,7 +5,7 @@
     <Sidebar />
 
     <main class="flex-1 flex flex-col">
-      <div class="flex w-full items-center px-2 py-4">
+      <div class="flex flex-col sm:flex-row w-full items-baseline sm:items-center px-2 py-4">
         <div
           class="flex items-center justify-center gap-2 text-lg text-text-base font-semibold"
         >
