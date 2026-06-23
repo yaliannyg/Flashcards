@@ -1,28 +1,15 @@
-import type { TagDTO } from "~~/shared/types/tags.types";
+import { useStudyStore } from "./useStudyStore";
 
-export async function useTags() {
-  const { data: tags } = await useFetch<TagDTO[]>("/api/tags", { key: "tags" });
+/**
+ * Read/write access to tags. Backed by the shared `useStudyStore` (MongoDB when
+ * signed in, localStorage otherwise).
+ */
+export function useTags() {
+  const store = useStudyStore();
 
-  const createTag = async (name: string) => {
-    const tag = await $fetch<TagDTO>("/api/tags", {
-      method: "POST",
-      body: { name },
-    });
-
-    if (tags.value) {
-      tags.value = [...tags.value, tag];
-    }
-
-    return tag;
+  return {
+    tags: store.tags,
+    createTag: store.createTag,
+    deleteTag: store.deleteTag,
   };
-
-  const deleteTag = async (slug: string) => {
-    await $fetch(`/api/tags/${slug}`, { method: "DELETE" });
-
-    if (tags.value) {
-      tags.value = tags.value.filter((tag) => tag.slug !== slug);
-    }
-  };
-
-  return { tags, createTag, deleteTag };
 }

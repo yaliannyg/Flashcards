@@ -9,4 +9,9 @@ export default defineNuxtConfig({
   },
   css: ["./app/assets/css/main.css"],
   modules: ["nuxt-mongoose"],
+  runtimeConfig: {
+    // Owner credentials checked server-side on sign in. Never exposed to the client.
+    authEmail: process.env.AUTH_EMAIL,
+    authPassword: process.env.AUTH_PASSWORD,
+  },
 });

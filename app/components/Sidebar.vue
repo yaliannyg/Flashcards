@@ -115,6 +115,8 @@ import { Plus, Tag, Trash2 } from "@lucide/vue";
 import { computed, ref } from "vue";
 import { useFlashcards } from "#imports";
 import { useSlug } from "~/composables/useSlug";
+import { useStudyStore } from "~/composables/useStudyStore";
+import { useTags } from "~/composables/useTags";
 import TagInputRow from "./Tags/TagInputRow.vue";
 
 type TabId = "tags" | "questions";
@@ -130,6 +132,7 @@ const activeTab = ref<TabId>("tags");
 
 const slug = useSlug();
 const { flashcards } = useFlashcards(slug.slugName);
+const store = useStudyStore();
 
 const sortedFlashcards = computed(() =>
   [...(flashcards.value ?? [])].sort((a, b) =>
@@ -137,11 +140,9 @@ const sortedFlashcards = computed(() =>
   ),
 );
 
-const { tags, createTag, deleteTag } = await useTags();
-const { data: totalAmountFlashcards } = await useFetch<number>(
-  "/api/flashcards/total",
-  { key: "flashcards-total" },
-);
+const { tags, createTag, deleteTag } = useTags();
+// "All" count is every flashcard regardless of the current tag filter.
+const totalAmountFlashcards = computed(() => store.flashcards.value.length);
 
 const isAddingTag = ref(false);
 

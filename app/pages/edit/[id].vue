@@ -20,8 +20,8 @@ import CreateCard, {
   type CardInput,
 } from "@/components/CreateCard/CreateCard.vue";
 import BaseButton from "@/components/UI/BaseButton.vue";
-import { reactive, ref } from "vue";
-import type { FlashcardDTO } from "~~/shared/types/flashcards.types";
+import { onMounted, reactive, ref } from "vue";
+import { useStudyStore } from "~/composables/useStudyStore";
 import type { TagDTO } from "~~/shared/types/tags.types";
 
 definePageMeta({
@@ -38,18 +38,18 @@ const route = useRoute();
 const router = useRouter();
 const id = route.params.id as string;
 
-const { data: flashcard } = await useFetch<FlashcardDTO>(
-  `/api/flashcards/${id}`,
-  { key: `flashcard:${id}` },
-);
+const { getFlashcard, updateFlashcard } = useStudyStore();
 
-const cards = ref<CardInput[]>([
-  {
-    question: flashcard.value?.question ?? "",
-    answer: flashcard.value?.answer ?? "",
-  },
-]);
-const tags = ref<TagDTO[]>(flashcard.value?.tags ?? []);
+const cards = ref<CardInput[]>([{ question: "", answer: "" }]);
+const tags = ref<TagDTO[]>([]);
+
+// Load on the client so guest (localStorage) flashcards resolve too.
+onMounted(async () => {
+  const flashcard = await getFlashcard(id);
+  if (!flashcard) return;
+  cards.value = [{ question: flashcard.question, answer: flashcard.answer }];
+  tags.value = flashcard.tags ?? [];
+});
 
 const errors = reactive<{
   cards: { question: string; answer: string }[];
@@ -76,16 +76,11 @@ async function handleSave() {
 
   const card = cards.value[0]!;
 
-  await $fetch(`/api/flashcards/${id}` as "/api/flashcards/:id", {
-    method: "PATCH",
-    body: {
-      question: card.question.trim(),
-      answer: card.answer.trim(),
-      tags: tags.value.map((tag) => tag.id),
-    },
+  await updateFlashcard(id, {
+    question: card.question.trim(),
+    answer: card.answer.trim(),
+    tags: tags.value.map((tag) => tag.id),
   });
-
-  await refreshNuxtData();
 
   router.back();
 }

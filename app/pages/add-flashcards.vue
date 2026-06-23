@@ -20,6 +20,7 @@ import CreateCard, {
 } from "@/components/CreateCard/CreateCard.vue";
 import BaseButton from "@/components/UI/BaseButton.vue";
 import { reactive, ref } from "vue";
+import { useStudyStore } from "~/composables/useStudyStore";
 import type { TagDTO } from "~~/shared/types/tags.types";
 
 definePageMeta({
@@ -31,6 +32,8 @@ const SAVE_LABEL = "Save";
 const QUESTION_REQUIRED = "Question is required";
 const ANSWER_REQUIRED = "Answer is required";
 const TAGS_REQUIRED = "Select at least one tag";
+
+const { createFlashcard, refresh } = useStudyStore();
 
 const cards = ref<CardInput[]>([{ question: "", answer: "" }]);
 const tags = ref<TagDTO[]>([]);
@@ -59,20 +62,21 @@ async function handleSave() {
 
   const tagIds = tags.value.map((tag) => tag.id);
 
+  // Persist every card first, then reload the store once.
   await Promise.all(
     cards.value.map((card) =>
-      $fetch("/api/flashcards", {
-        method: "POST",
-        body: {
+      createFlashcard(
+        {
           question: card.question.trim(),
           answer: card.answer.trim(),
           tags: tagIds,
         },
-      }),
+        false,
+      ),
     ),
   );
 
-  await refreshNuxtData(["tags", "flashcards-total"]);
+  await refresh();
 
   await navigateTo("/");
 }

@@ -109,7 +109,7 @@ const cards = defineModel<CardInput[]>("cards", {
 });
 const tags = defineModel<TagDTO[]>("tags", { default: () => [] });
 
-const { tags: allTags } = await useTags();
+const { tags: allTags } = useTags();
 
 const availableTags = computed(() =>
   (allTags.value ?? []).filter(

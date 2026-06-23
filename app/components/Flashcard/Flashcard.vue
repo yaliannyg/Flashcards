@@ -59,6 +59,7 @@
 <script setup lang="ts">
 import { Pencil, X } from "@lucide/vue";
 import { computed, ref } from "vue";
+import { useStudyStore } from "~/composables/useStudyStore";
 import type {
   FlashcardDTO,
   ReviewResult,
@@ -73,6 +74,8 @@ type Props = Omit<FlashcardDTO, "id"> & { cardId: string };
 const { cardId, dotsActive = 0, stats } = defineProps<Props>();
 
 const emit = defineEmits<{ delete: [id: string] }>();
+
+const { updateFlashcard } = useStudyStore();
 
 const handleDelete = () => emit("delete", cardId);
 
@@ -90,10 +93,8 @@ const handleDifficulty = async (value: number) => {
   difficulty.value = value === previous ? 0 : value;
 
   try {
-    await $fetch(`/api/flashcards/${cardId}` as "/api/flashcards/:id", {
-      method: "PATCH",
-      body: { dotsActive: difficulty.value },
-    });
+    // The card owns its own optimistic state, so skip the store reload.
+    await updateFlashcard(cardId, { dotsActive: difficulty.value }, false);
   } catch {
     // Revert the optimistic update if persisting failed.
     difficulty.value = previous;
@@ -108,12 +109,11 @@ const handleReview = async (result: ReviewResult) => {
   isAnswerRevealed.value = false;
 
   try {
-    await $fetch(`/api/flashcards/${cardId}` as "/api/flashcards/:id", {
-      method: "PATCH",
-      body: {
-        stats: { successes: successes.value, failures: failures.value },
-      },
-    });
+    await updateFlashcard(
+      cardId,
+      { stats: { successes: successes.value, failures: failures.value } },
+      false,
+    );
   } catch {
     // Revert the optimistic update if persisting failed.
     if (result === "correct") successes.value -= 1;
