@@ -26,7 +26,7 @@
     <div class="group relative flex flex-1 overflow-hidden">
       <button
         type="button"
-        class="absolute top-2 right-18 z-10 cursor-pointer rounded p-0.5 text-text-muted opacity-0 transition group-hover:opacity-100 hover:text-primary"
+        class="absolute top-2 right-18 z-10 cursor-pointer rounded p-0.5 text-text-muted opacity-100 lg:opacity-0 transition lg:group-hover:opacity-100 hover:text-primary"
         aria-label="Edit flashcard"
         @click="handleEdit"
       >
