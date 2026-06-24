@@ -5,7 +5,17 @@
     <Sidebar />
 
     <main class="flex-1 flex flex-col">
-      <div class="flex flex-col sm:flex-row w-full items-baseline sm:items-center px-2 py-4">
+      <div class="flex flex-row w-full items-center px-2 py-4">
+        <button
+          type="button"
+          class="sm:hidden -ml-1 mr-1 p-2 rounded-lg text-text-heading transition-colors hover:text-text-base hover:bg-surface-muted outline-none focus-visible:ring-2 focus-visible:ring-primary-emphasis"
+          aria-label="Open menu"
+          aria-controls="app-sidebar"
+          :aria-expanded="isOpen"
+          @click="open"
+        >
+          <Bars3Icon class="size-6" />
+        </button>
         <div
           class="flex items-center justify-center gap-2 text-lg text-text-base font-semibold"
         >
@@ -35,12 +45,15 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { UserCircleIcon } from "@heroicons/vue/24/outline";
+import { Bars3Icon, UserCircleIcon } from "@heroicons/vue/24/outline";
 import BaseButton from "@/components/UI/BaseButton.vue";
 import AuthModal from "@/components/UI/AuthModal.vue";
 import Sidebar from "@/components/Sidebar.vue";
+import { useSidebar } from "~/composables/useSidebar";
 
 const router = useRouter();
+
+const { isOpen, open } = useSidebar();
 
 const isAuthModalOpen = ref(false);
 

@@ -12,7 +12,7 @@ const { flashcards, deleteFlashcard } = useFlashcards(slug.slugName);
 </script>
 
 <template>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 px-3">
+  <div class="grid grid-cols-2 lg:grid-cols-3 gap-5 px-3">
     <Flashcard
       v-for="{ id, tags, question, answer, stats, dotsActive } in flashcards"
       :key="id"
